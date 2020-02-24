@@ -21,6 +21,8 @@ public class InteractiveFiction {
 	static String runGame(TextInput input, GameWorld game) {
 		// This is the current location of the player (initialize as start).
 		Player player = new Player(game.getStart());
+		
+		System.out.println("Type 'help' when needed");
 
 		// Play the game until quitting.
 		// This is too hard to express here, so we just use an infinite loop with breaks.
@@ -31,6 +33,11 @@ public class InteractiveFiction {
 			System.out.println();
 			System.out.println("... --- ...");
 			System.out.println(here.getDescription());
+			
+			if (player.hasBeenHereBefore()) {
+				System.out.println("This place feels familiar...");
+			}
+			player.rememberThisPlace();
 
 			// Game over after print!
 			if (here.isTerminalState()) {
@@ -55,8 +62,9 @@ public class InteractiveFiction {
 			// Get the word they typed as lowercase, and no spaces.
 			// Do not uppercase action -- I have lowercased it.
 			String action = words.get(0).toLowerCase().trim();
-
-			if (action.equals("quit")) {
+			
+			//quit command
+			if (action.equals("escape") || action.equals("q")) { 
 				if (input.confirm("Are you sure you want to quit?")) {
 					// quit!
 					break;
@@ -64,6 +72,18 @@ public class InteractiveFiction {
 					// go to the top of the game loop!
 					continue;
 				}
+			}
+			
+			//help command 
+			if (action.equals("help")) {
+				System.out.println("Type in the number of rooms");
+				System.out.println("To quit, type 'escape' or 'q' ");
+				continue;
+			}
+			
+			
+			if (action.equals("search")) {
+				//TODO: SecretExt();
 			}
 
 			// From here on out, what they typed better be a number!
@@ -101,7 +121,8 @@ public class InteractiveFiction {
 		TextInput input = TextInput.fromArgs(args);
 
 		// This is the game we're playing.
-		GameWorld game = new SpookyMansion();
+		GameWorld game = new FordHall();
+//		GameWorld game = new SpookyMansion();
 
 		// Actually play the game.
 		runGame(input, game);
