@@ -11,6 +11,9 @@ import java.util.Map;
 public class FordHall implements GameWorld {
 	private Map<String, Place> places = new HashMap<>();
 
+	//Game timer implemented in GameTime class
+	public GameTime gameTimer = new GameTime();
+	
 	/**
 	 * Where should the player start?
 	 */
@@ -30,6 +33,8 @@ public class FordHall implements GameWorld {
 		entranceDoor.addExit(new Exit("Office4", "Go to Office4."));
 		entranceDoor.addExit(new Exit("Office7", "Go to Office7."));
 		
+		entranceDoor.addItem("coffee");
+		
 
 		Place Office1 = insert(
 				Place.create("Office1", "Empty Office"));
@@ -42,8 +47,10 @@ public class FordHall implements GameWorld {
 		Place Office4= insert(
 				Place.create("Office4","Where was Office3...? " + "It's a red room"));
 		Office4.addExit(new Exit("entranceDoor", "Should we go back?"));
-		Office4.addExit(new Exit("Office5", "We can proceed to Office5"));
-
+		Office4.addExit(new Exit("Office5", "Go to the next Office (5)"));
+		Office4.addExit(new SecretExit("Office9", "This is a way to Secret Room"));
+		//SecretExit implemented 
+			
 		Place Office5 = insert(
 				Place.create("Office5", "Bigger than Office4, smaller than Office6"));
 		Office5.addExit(new Exit("Office4", "We could go back."));
@@ -72,14 +79,19 @@ public class FordHall implements GameWorld {
 		Place Office9 = insert(
 				Place.create("Office9", "You have found your prof's office."));
 		Office9.addExit(new Exit("officeHours", "There he is!"));
-
-
+		
 		Place officeHours = insert(Place.terminal("officeHours", "You have found the office.\n"
 				+ "Only 20 min. left! " + "Good luck!"));
 
 
 		// Make sure your graph makes sense!
 		checkAllExitsGoSomewhere();
+		
+		
+		//implement stuff
+		entranceDoor = Place.create("OneCard", "You have the OneCard");
+		entranceDoor.addExit(new Exit("Office1", "First Office(1)"));
+		//entranceDoor.addItem("OneCard");
 	}
 
 	/**

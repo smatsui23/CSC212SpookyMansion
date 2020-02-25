@@ -8,6 +8,7 @@ import java.util.Objects;
  *
  */
 public class Exit {
+
 	/**
 	 * How do we describe this exit to a user, e.g., "A door with a spiderweb."
 	 */

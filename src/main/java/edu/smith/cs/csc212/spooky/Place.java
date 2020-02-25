@@ -14,6 +14,10 @@ public class Place {
 	 * This is a list of places we can get to from this place.
 	 */
 	private List<Exit> exits;
+	
+	//This is a list of items in a location
+	private List<String> items;
+	
 	/**
 	 * This is the identifier of the place.
 	 */
@@ -37,6 +41,7 @@ public class Place {
 		this.id = id;
 		this.description = description;
 		this.exits = new ArrayList<>();
+		this.items = new ArrayList<>();
 		this.terminal = terminal;
 	}
 	
@@ -47,6 +52,15 @@ public class Place {
 	public void addExit(Exit exit) {
 		this.exits.add(exit);
 	}
+	
+	/**
+	 * Create an item at each location.
+	 * @param item - the description and target of the other Place.
+	 */
+	public void addItem(String item) {
+		this.items.add(item);
+	}
+	
 	
 	/**
 	 * For gameplay, whether this place ends the game.
@@ -70,8 +84,8 @@ public class Place {
 	 */
 	public String getDescription() {
 		return this.description;
-	}
-
+	}	
+	
 	/**
 	 * Get a view of the exits from this Place, for navigation.
 	 * @return all the exits from this place.
@@ -84,6 +98,23 @@ public class Place {
 			}
 		}
 		return visible;
+	}
+	
+	
+	
+	//When a user types search, 
+	//if there is a SecretExit in the room they are currently in, 
+	//it should be made visible to them
+	
+	public void search() {	
+		for (Exit e: this.exits) {
+			if (e instanceof SecretExit) {
+				SecretExit exit = (SecretExit) e;
+				if(exit.isSecret()) {
+					exit.search();
+				}
+			}
+		}
 	}
 	
 	/**
@@ -129,5 +160,7 @@ public class Place {
 		}
 		return false;
 	}
+	
+
 	
 }

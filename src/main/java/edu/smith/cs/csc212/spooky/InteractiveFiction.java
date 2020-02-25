@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class InteractiveFiction {
 
+	// This is the game we're playing.
+	GameWorld game = new FordHall();	
+	FordHall ford = (FordHall) game;
+	
 	/**
 	 * This method actually plays the game.
 	 * @param input - a helper object to ask the user questions.
@@ -29,10 +33,12 @@ public class InteractiveFiction {
 		while (true) {
 			// Print the description of where you are.
 			Place here = game.getPlace(player.getPlace());
-			
+
 			System.out.println();
 			System.out.println("... --- ...");
 			System.out.println(here.getDescription());
+			//System.out.println(here.getDescription(ford.gameTimer));
+
 			
 			if (player.hasBeenHereBefore()) {
 				System.out.println("This place feels familiar...");
@@ -51,6 +57,15 @@ public class InteractiveFiction {
 				Exit e = exits.get(i);
 				System.out.println(" "+i+". " + e.getDescription());
 			}
+			
+//			// Check items for every place
+//			List<String> items = here.getVisibleExits();
+//
+//			for (int i=0; i<exits.size(); i++) {
+//				Exit e = exits.get(i);
+//				System.out.println(" "+i+". " + e.getDescription());
+//			}
+			
 
 			// Figure out what the user wants to do, for now, only "quit" is special.
 			List<String> words = input.getUserWords("?");
@@ -81,10 +96,21 @@ public class InteractiveFiction {
 				continue;
 			}
 			
-			
+			//search command 
 			if (action.equals("search")) {
-				//TODO: SecretExt();
+				here.search();
+				continue;
 			}
+				
+			//}
+			
+			//stuff command 
+			if (action.equals("stuff")) {
+				//print items if there is one 
+				//if there is no items, print You have nothing 
+				System.out.println("You have nothing.");
+			}
+
 
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
@@ -121,12 +147,14 @@ public class InteractiveFiction {
 		TextInput input = TextInput.fromArgs(args);
 
 		// This is the game we're playing.
-		GameWorld game = new FordHall();
-//		GameWorld game = new SpookyMansion();
-
+		GameWorld game = new FordHall();	
+		FordHall ford = (FordHall) game;
+		
 		// Actually play the game.
 		runGame(input, game);
 
+		ford.gameTimer.time();
+		
 		// You get here by typing "quit" or by reaching a Terminal Place.
 		System.out.println("\n\n>>> GAME OVER <<<");
 	}
