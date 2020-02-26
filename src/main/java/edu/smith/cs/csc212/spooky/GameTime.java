@@ -24,7 +24,7 @@ public class GameTime {
 			this.days += 1;
 			instanceHour %= 24;
 		}
-		System.out.println("Time is" + this.hour + ":00");
+		System.out.println("Time is " + this.hour + ":00");
 	}
 	
 	public int getHour() {
@@ -32,7 +32,7 @@ public class GameTime {
 			int modHours = this.hour;
 			modHours %= 24;
 			return modHours;
-		}else {
+		} else {
 			return this.hour;
 			
 		}

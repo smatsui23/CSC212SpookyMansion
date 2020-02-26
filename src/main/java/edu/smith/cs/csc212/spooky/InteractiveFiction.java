@@ -23,11 +23,11 @@ public class InteractiveFiction {
 	 * @return where - the place the player finished.
 	 */
 	static String runGame(TextInput input, GameWorld game) {
-		//GameWorld game = new FordHall();	
 		FordHall ford = (FordHall) game;
 		
 		// This is the current location of the player (initialize as start).
 		Player player = new Player(game.getStart());
+		String place = game.getStart();
 		
 		System.out.println("Type 'help' when needed");
 
@@ -35,12 +35,12 @@ public class InteractiveFiction {
 		// This is too hard to express here, so we just use an infinite loop with breaks.
 		while (true) {
 			// Print the description of where you are.
-			Place here = game.getPlace(player.getPlace());
+			//Place here = game.getPlace(player.getPlace());
+			Place here = game.getPlace(place);
 
 			System.out.println();
 			System.out.println("... --- ...");
 			System.out.println(here.getDescription());
-			//System.out.println(here.getDescription(ford.gameTimer));
 
 			
 			if (player.hasBeenHereBefore()) {
@@ -60,14 +60,6 @@ public class InteractiveFiction {
 				Exit e = exits.get(i);
 				System.out.println(" "+i+". " + e.getDescription());
 			}
-			
-//			// Check items for every place
-//			List<String> items = here.getVisibleExits();
-//
-//			for (int i=0; i<exits.size(); i++) {
-//				Exit e = exits.get(i);
-//				System.out.println(" "+i+". " + e.getDescription());
-//			}
 			
 
 			// Figure out what the user wants to do, for now, only "quit" is special.
@@ -134,15 +126,24 @@ public class InteractiveFiction {
 
 			// Move to the room they indicated.
 			Exit destination = exits.get(exitNum);
-			if (destination.canOpen(player)) {
-				player.moveTo(destination.getTarget());
-			} else {
-				// TODO: some kind of message about it being locked?
+			if (destination instanceof LockedExit) {
+				if (destination.getTarget() == "Office5") {
+					if(ford.stuff.contains("OneCard")) {
+						ford.gameTimer.increaseHour();
+						place = destination.getTarget();
+					}else {
+						System.out.println("You need OneCard to enter this room");
+					}
+						
 			}
-		}
-
+		} else {
+			ford.gameTimer.increaseHour();
+			place = destination.getTarget();
+		
+		}}
 		return player.getPlace();
-	}
+			
+		}
 
 	/**
 	 * This is where we play the game.

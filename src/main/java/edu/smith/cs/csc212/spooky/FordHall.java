@@ -59,9 +59,8 @@ public class FordHall implements GameWorld {
 		Place Office4= insert(
 				Place.create("Office4","Where was Office3...? " + "It's a red room"));
 		Office4.addExit(new Exit("entranceDoor", "Should we go back?"));
-		Office4.addExit(new Exit("Office5", "Go to the next Office (5)"));
+		Office4.addExit(new LockedExit("Office5", "Go to the next Office (5)"));
 		Office4.addExit(new SecretExit("Office9", "This is a way to Secret Room"));
-		//SecretExit implemented 
 			
 		Place Office5 = insert(
 				Place.create("Office5", "Bigger than Office4, smaller than Office6"));
