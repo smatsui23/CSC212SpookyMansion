@@ -1,6 +1,8 @@
 package edu.smith.cs.csc212.spooky;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,7 +11,15 @@ import java.util.Map;
  *
  */
 public class FordHall implements GameWorld {
+	
 	private Map<String, Place> places = new HashMap<>();
+	
+	//Items that the user has collected 
+	public List<String> stuff = new ArrayList<String>();
+	
+	public List<Place> placesList = new ArrayList<>();
+	
+	private List<String> allItems = new ArrayList<String>();
 
 	//Game timer implemented in GameTime class
 	public GameTime gameTimer = new GameTime();
@@ -26,19 +36,21 @@ public class FordHall implements GameWorld {
 	 * This constructor builds our FordHall game.
 	 */
 	public FordHall() {
+		
 		Place entranceDoor = insert(
 				Place.create("entranceDoor", "Welcome to Ford Hall. Let's go to office hours"));
 		entranceDoor.addExit(new Exit("Office1", "Go to Office1."));
 		entranceDoor.addExit(new Exit("Office2", "Go to Office2."));
 		entranceDoor.addExit(new Exit("Office4", "Go to Office4."));
 		entranceDoor.addExit(new Exit("Office7", "Go to Office7."));
-		
-		entranceDoor.addItem("coffee");
-		
+		entranceDoor.hasItems = true;
+		entranceDoor.putItem("Coffee");
 
 		Place Office1 = insert(
 				Place.create("Office1", "Empty Office"));
 		Office1.addExit(new Exit("entranceDoor", "Go back."));
+		Office1.hasItems = true;
+		Office1.putItem("OneCard");
 
 		Place Office2 = insert(
 				Place.create("Office2", "You have found Prof.X's Office."));
@@ -87,11 +99,17 @@ public class FordHall implements GameWorld {
 		// Make sure your graph makes sense!
 		checkAllExitsGoSomewhere();
 		
+		for (Map.Entry<String, Place> place: places.entrySet()) {
+			placesList.add(place.getValue());
+		}
 		
-		//implement stuff
-		entranceDoor = Place.create("OneCard", "You have the OneCard");
-		entranceDoor.addExit(new Exit("Office1", "First Office(1)"));
-		//entranceDoor.addItem("OneCard");
+		for (Place eachPlace : placesList) {
+			for (int i = 0; i < eachPlace.getItems().size(); i++) {
+				List<String> itemsFromPlace = eachPlace.getItems();
+				allItems.add(itemsFromPlace.get(i));
+			}
+		}
+		
 	}
 
 	/**
@@ -137,6 +155,21 @@ public class FordHall implements GameWorld {
 	 */
 	public Place getPlace(String id) {
 		return this.places.get(id);
+	}
+	
+	public void getStuff(String placeid) {
+		stuff.addAll(this.places.get(placeid).getItems());
+		this.places.get(placeid).hasCollected = true;
+	}
+	
+	//print out all the things you have collected
+	public void printStuff() {
+		System.out.println("You have following items:");
+		for (int i = 0; i < this.stuff.size(); i++) {
+			System.out.println(stuff);
+		}if (this.stuff.size() == 0) {
+			System.out.println("You have nothing");
+		}
 	}
 }
 

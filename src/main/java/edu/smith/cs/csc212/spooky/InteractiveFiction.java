@@ -14,7 +14,7 @@ public class InteractiveFiction {
 
 	// This is the game we're playing.
 	GameWorld game = new FordHall();	
-	FordHall ford = (FordHall) game;
+	//FordHall ford = (FordHall) game;
 	
 	/**
 	 * This method actually plays the game.
@@ -23,6 +23,9 @@ public class InteractiveFiction {
 	 * @return where - the place the player finished.
 	 */
 	static String runGame(TextInput input, GameWorld game) {
+		//GameWorld game = new FordHall();	
+		FordHall ford = (FordHall) game;
+		
 		// This is the current location of the player (initialize as start).
 		Player player = new Player(game.getStart());
 		
@@ -101,14 +104,17 @@ public class InteractiveFiction {
 				here.search();
 				continue;
 			}
-				
-			//}
+
+			//take command 
+			if (action.equals("take")) {
+				ford.getStuff(here.getId());
+				continue;
+			}
 			
 			//stuff command 
 			if (action.equals("stuff")) {
-				//print items if there is one 
-				//if there is no items, print You have nothing 
-				System.out.println("You have nothing.");
+				ford.printStuff();
+				continue;
 			}
 
 

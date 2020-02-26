@@ -1,8 +1,9 @@
 package edu.smith.cs.csc212.spooky;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This represents a place in our text adventure.
@@ -14,9 +15,6 @@ public class Place {
 	 * This is a list of places we can get to from this place.
 	 */
 	private List<Exit> exits;
-	
-	//This is a list of items in a location
-	private List<String> items;
 	
 	/**
 	 * This is the identifier of the place.
@@ -31,6 +29,15 @@ public class Place {
 	 */
 	private boolean terminal;
 	
+	//Does this place have items?
+	public boolean hasItems;
+	
+	//Is the item collected?
+	public boolean hasCollected;
+	
+	private Map<Place, String> itemsInPlaces = new HashMap<>();
+	
+	
 	/**
 	 * Internal only constructor for Place. Use {@link #create(String, String)} or {@link #terminal(String, String)} instead.
 	 * @param id - the internal id of this place.
@@ -41,8 +48,8 @@ public class Place {
 		this.id = id;
 		this.description = description;
 		this.exits = new ArrayList<>();
-		this.items = new ArrayList<>();
 		this.terminal = terminal;
+		this.hasItems = false;
 	}
 	
 	/**
@@ -51,14 +58,6 @@ public class Place {
 	 */
 	public void addExit(Exit exit) {
 		this.exits.add(exit);
-	}
-	
-	/**
-	 * Create an item at each location.
-	 * @param item - the description and target of the other Place.
-	 */
-	public void addItem(String item) {
-		this.items.add(item);
 	}
 	
 	
@@ -117,6 +116,16 @@ public class Place {
 		}
 	}
 	
+	//Reterieve the list of items present
+	public List<String> getItems(){
+		List<String> theItems = new ArrayList<String>(this.itemsInPlaces.values());
+		return theItems;
+	}
+	
+	//add items to places in the FordHall offices
+	public void putItem(String itemItem) {
+		this.itemsInPlaces.put(this, itemItem);
+	}
 	/**
 	 * This is a terminal location (good or bad).
 	 * @param id - this is the id of the place (for creating {@link Exit} objects that go here).
